@@ -1,0 +1,12 @@
+name: ThePurge
+version: 1.0
+main: com.thepurge.ThePurge
+api-version: 1.21
+commands:
+  purge:
+    description: Admin commands for The Purge
+    permission: purge.admin
+permissions:
+  purge.admin:
+    description: Allows managing the purge
+    default: op

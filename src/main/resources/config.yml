@@ -1,0 +1,245 @@
+# ============================================================================
+# ThePurge Plugin - Configuration
+# ============================================================================
+# This file lets you customize every aspect of the purge cycle.
+# After editing, run '/purge reload' or restart the server to apply changes.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IDLE PHASE — the waiting period between purges
+# ---------------------------------------------------------------------------
+idle:
+  # Minimum number of online players required for the purge to start
+  min-players: 3
+
+  # Timing is based on a Gaussian (bell-curve) random distribution.
+  # The actual value is clamped between min-days and max-days.
+  timing:
+    min-days: 7
+    max-days: 30
+    mean-days: 15     # Peak of the bell curve
+    std-dev: 5        # Spread of the bell curve
+
+# ---------------------------------------------------------------------------
+# WARNING PHASE — the countdown before the purge starts
+# ---------------------------------------------------------------------------
+warning:
+  # Duration in ticks (20 ticks = 1 second)
+  duration-ticks: 600
+
+  # Sound played once when warning begins
+  start-sound:
+    sound: ENTITY_WITHER_SPAWN
+    volume: 0.5
+    pitch: 0.5
+
+  # Sound repeated like a heartbeat during countdown
+  heartbeat-sound:
+    sound: ENTITY_WARDEN_HEARTBEAT
+    volume: 1.0
+    pitch: 1.0
+
+  # The heartbeat speeds up as the purge approaches
+  heartbeat:
+    # Interval between beats in ticks
+    fast-interval: 10
+    medium-interval: 20
+    slow-interval: 40
+    # Thresholds (remaining ticks) that trigger the next speed tier
+    fast-threshold: 100
+    medium-threshold: 200
+
+# ---------------------------------------------------------------------------
+# ACTIVE PURGE — the main event
+# ---------------------------------------------------------------------------
+purge:
+  # Duration in ticks. Set to 0 to use the same random duration as 'idle.timing'
+  duration-ticks: 0
+
+  # Sound played when purge starts
+  start-sound:
+    sound: ENTITY_ENDER_DRAGON_GROWL
+    volume: 1.0
+    pitch: 0.8
+
+  # Sound played when purge ends
+  end-sound:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1.0
+    pitch: 0.5
+
+  # Time of day set when purge starts (in Minecraft ticks, 0 = dawn, 6000 = noon, 12000 = dusk, 18000 = midnight)
+  time-of-day: 18000
+
+  # Time of day set when purge ends (0 = sunrise)
+  end-time-of-day: 0
+
+# ---------------------------------------------------------------------------
+# DIFFICULTY CONFIG
+# Whether to force Hard difficulty during the purge
+# When true, the world difficulty is set to Hard during purge and restored after
+force-hard-difficulty: true
+
+# ---------------------------------------------------------------------------
+# PVP — control player-versus-player combat outside of purge
+# ---------------------------------------------------------------------------
+pvp:
+  # Whether PvP is allowed while the purge is stopped (IDLE or WARNING state).
+  # When false, PvP is only possible during the active purge.
+  # When true, players can fight each other even when the purge is not running.
+  enabled-when-stopped: false
+
+# ---------------------------------------------------------------------------
+# LOCATOR BAR — toggle the 1.21.6+ player locator bar (colored dots on XP bar)
+# ---------------------------------------------------------------------------
+locator-bar:
+  # Whether to automatically manage the locator bar based on purge state.
+  # When enabled, the locator bar is OFF outside of purge and ON during purge.
+  enabled: true
+
+# ---------------------------------------------------------------------------
+# BOSS BAR — displayed to all players during the purge
+# ---------------------------------------------------------------------------
+boss-bar:
+  title: "&4&lPURGE ACTIVE"
+  # Available colors: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  color: RED
+  # Available styles: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+  style: SEGMENTED_10
+
+# ---------------------------------------------------------------------------
+# SCOREBOARD TEAMS — prefix/color/collision for each role
+# ---------------------------------------------------------------------------
+teams:
+  butcher:
+    prefix: "&4&l[BUTCHER] "
+    color: DARK_RED
+    # Collision rule: ALWAYS, NEVER, OTHER_NAME, OWN_TEAM
+    collision-rule: ALWAYS
+  innocent:
+    prefix: "&6&l[INNOCENT] "
+    color: GOLD
+    collision-rule: NEVER
+  prey:
+    prefix: "&2&l[PREY] "
+    color: GREEN
+    collision-rule: NEVER
+
+# ---------------------------------------------------------------------------
+# ROLES — potion effects applied to each role during the purge
+# You can add multiple effects per role. Each entry supports:
+#   type:         Any PotionEffectType name (e.g. STRENGTH, INVISIBILITY, WEAKNESS, SPEED, JUMP, etc.)
+#   amplifier:    0 = I, 1 = II, 2 = III, etc.
+#   duration:     Duration in ticks (20 ticks = 1 sec). Applied every tick, so keep short.
+#   ambient:      If true, particles are less noticeable (wobble effect)
+#   show-particles: Show swirling effect particles
+#   show-icon:    Show effect icon in inventory
+#   enabled:      Set to false to disable this effect
+# ---------------------------------------------------------------------------
+roles:
+  butcher:
+    effects:
+      - type: STRENGTH
+        amplifier: 0
+        duration: 40
+        ambient: true
+        show-particles: true
+        show-icon: true
+        enabled: true
+  innocent:
+    effects:
+      - type: INVISIBILITY
+        amplifier: 0
+        duration: 40
+        ambient: false
+        show-particles: false
+        show-icon: false
+        enabled: true
+  prey:
+    effects:
+      - type: WEAKNESS
+        amplifier: 0
+        duration: 40
+        ambient: true
+        show-particles: true
+        show-icon: true
+        enabled: true
+
+# ---------------------------------------------------------------------------
+# MOB SPAWNING CONFIG
+# Controls mob spawning during the purge
+# mob-spawn-rate-modifier: 0 = normal, negative = reduce, positive = increase
+# mob-health-multiplier: Multiplier for mob health (default: 1.0)
+# mob-damage-multiplier: Multiplier for mob damage (default: 1.5 = 50% stronger)
+mob-spawn-rate-modifier: 0
+mob-health-multiplier: 1.0
+mob-damage-multiplier: 1.5
+
+# ---------------------------------------------------------------------------
+# GLOBAL EFFECTS — applied to ALL players during the purge (not role-specific)
+# ---------------------------------------------------------------------------
+global-effects:
+  glowing:
+    enabled: true
+    type: GLOWING
+    amplifier: 0
+    duration: 40
+    ambient: false
+    show-particles: false
+    show-icon: false
+
+# ---------------------------------------------------------------------------
+# PARTICLES — visual effects
+# ---------------------------------------------------------------------------
+particles:
+  # Colored trail behind each player
+  trail:
+    enabled: true
+    # Available: DUST, DUST_COLOR_TRANSITION, SPELL_MOB, SPELL_MOB_AMBIENT, etc.
+    particle: DUST
+    # Number of particles per tick per player
+    count: 2
+    # Spread (XYZ offsets)
+    offset-x: 0.3
+    offset-y: 0.1
+    offset-z: 0.3
+    speed: 0
+    # Size of the dust particle (only used for DUST type)
+    size: 1.5
+    # If true, each player gets a random color per purge. If false, uses fixed-color below.
+    random-color: true
+    # Fallback / fixed color (used when random-color is false)
+    fixed-color:
+      red: 255
+      green: 255
+      blue: 255
+
+  # "Blood moon" sky particles above each player
+  sky:
+    enabled: true
+    particle: DUST
+    count: 10
+    offset-x: 5
+    offset-y: 2
+    offset-z: 5
+    speed: 0
+    size: 2.0
+    # Y offset above the player (spawned at player Y + this value)
+    y-offset: 10
+    color:
+      red: 255
+      green: 0
+      blue: 0
+
+# ---------------------------------------------------------------------------
+# BROADCAST MESSAGES — edit the text of every server-wide message
+# Use Minecraft color codes (&0-&f, &k-&o, &r) and formatting codes.
+# ---------------------------------------------------------------------------
+messages:
+  warning-started: "&4&oThe air grows still... animals flee... The Blood Moon rises."
+  purge-started: "&4&lLet the hunt begin"
+  purge-ended: "&a&oThe Purge has ended. Peace is restored."
+  # Reward messages — %s is replaced with the player's name
+  butcher-reward: "%s &cwas the Butcher! Let the blood soak their name."
+  innocent-reward: "%s &6survived with clean hands. They are the Innocent."
+  prey-reward: "%s &afell the most. They are the Prey."
