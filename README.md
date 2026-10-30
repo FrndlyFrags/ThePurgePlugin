@@ -166,9 +166,9 @@ Bug reports, suggestions and pull requests are welcome.
 ThePurge is developed by the **FrndlyMoon** team.
 
 | Developer |
-|-----------|
-| [**LwkMoon**](https://github.com/LwkMoon) | 
+|-----------| 
 | [**FrndlyFrags**](https://github.com/FrndlyFrags) | 
+| [**LwkMoon**](https://github.com/LwkMoon) |
 
 ---
 
